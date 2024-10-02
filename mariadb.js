@@ -2,10 +2,10 @@ import { createConnection } from 'mysql2';
 
 // Create the connection to database
 const connection = createConnection({
-	host: '127.0.0.1',
+	host: 'localhost',
 	user: 'root',
 	password: 'root',
-	database: 'Youtube',
+	database: 'bookshop',
 	dateStrings: true,
 });
 
