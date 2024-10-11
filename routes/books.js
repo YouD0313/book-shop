@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { config } from 'dotenv';
-import { query, param, validationResult } from 'express-validator';
+import { body, query, param, validationResult } from 'express-validator';
 import {
 	selectAll,
 	selectCategory,
@@ -43,7 +43,11 @@ router.get(
 // 개별도서조회
 router.get(
 	'/:book_id',
-	[param('book_id').notEmpty().isInt(), validation],
+	[
+		param('book_id').notEmpty().isInt(),
+		body('user_id').notEmpty().isInt(),
+		validation,
+	],
 	selectEach
 );
 
