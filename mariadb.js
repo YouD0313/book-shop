@@ -1,7 +1,7 @@
-import { createConnection } from 'mysql2';
+import { createConnection } from 'mysql2/promise';
 
 // Create the connection to database
-const connection = createConnection({
+const connection = await createConnection({
 	host: 'localhost',
 	user: 'root',
 	password: 'root',
@@ -9,6 +9,8 @@ const connection = createConnection({
 	dateStrings: true,
 });
 
-const db = connection.promise();
+// const db = connection.promise();
 
-export default db;
+// export default db;
+
+export default connection;

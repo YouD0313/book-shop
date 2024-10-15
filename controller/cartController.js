@@ -1,6 +1,5 @@
 import conn from '../mariadb.js';
 import { StatusCodes } from 'http-status-codes';
-import { login } from './UserController.js';
 
 // 장바구니 담기
 export const cartAdd = async (req, res, next) => {
@@ -8,15 +7,16 @@ export const cartAdd = async (req, res, next) => {
 	const sql = `SELECT * FROM cartItems WHERE book_id=? AND user_id=?`;
 	const params = [parseInt(book_id), parseInt(user_id)];
 	const [result] = await conn.query(sql, params);
-	const [{ quantity }] = result;
 
 	if (result.length > 0) {
+		const [{ quantity }] = result;
 		await conn.query(
 			`UPDATE cartItems
 		  SET quantity=?
 		  WHERE book_id=? AND user_id=?`,
 			[parseInt(quantity) + 1, ...params]
 		);
+
 		return res
 			.status(StatusCodes.OK)
 			.json({ message: `이미 담겨있습니다. 수량을 추가합니다.` });
@@ -25,6 +25,7 @@ export const cartAdd = async (req, res, next) => {
 		`INSERT INTO cartItems(user_id, book_id, quantity) VALUES(?, ?, ?)`,
 		[...params, parseInt(count)]
 	);
+
 	return res.status(StatusCodes.OK).json({ message: '장바구니 담기' });
 };
 
@@ -37,6 +38,7 @@ export const cartViewAll = async (req, res, next) => {
 							LEFT JOIN books ON cartItems.book_id=books.id
 							WHERE cartItems.user_id=?`;
 	const [result] = await conn.query(sql, parseInt(user_id));
+
 	if (result.length > 0) {
 		return res.status(StatusCodes.OK).json(result);
 	}
